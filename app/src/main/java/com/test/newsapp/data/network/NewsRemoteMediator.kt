@@ -1,6 +1,5 @@
 package com.test.newsapp.data.network
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -24,7 +23,6 @@ class NewsRemoteMediator(
         state: PagingState<Int, NewsEntity>
     ): MediatorResult {
         return try {
-            Log.d("NewsRemoteMediator", "load: " + loadType)
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1
                 LoadType.PREPEND -> return MediatorResult.Success(
@@ -68,4 +66,5 @@ class NewsRemoteMediator(
             MediatorResult.Error(e)
         }
     }
+
 }

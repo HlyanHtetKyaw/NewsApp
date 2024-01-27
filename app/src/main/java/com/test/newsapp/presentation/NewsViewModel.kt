@@ -32,7 +32,7 @@ class NewsViewModel @Inject constructor(
     val newsPagingFlow = queryFlow.flatMapLatest { query ->
         val searchQuery = query.ifEmpty { "bitcoin" }
 
-        Pager(config = PagingConfig(pageSize = 5),
+        Pager(config = PagingConfig(pageSize = 50),
             remoteMediator = NewsRemoteMediator(
                 newsDb = newsDb,
                 apiService = apiService,
