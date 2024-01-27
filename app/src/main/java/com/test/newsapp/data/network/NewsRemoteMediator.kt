@@ -31,11 +31,7 @@ class NewsRemoteMediator(
 
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
-                    if (lastItem == null) {
-                        1
-                    } else {
-                        (lastItem.id / state.config.pageSize) + 1
-                    }
+                    lastItem?.nextPageKey ?: 1
                 }
             }
 
@@ -50,7 +46,7 @@ class NewsRemoteMediator(
                     newsDb.dao.clearAll()
                 }
                 if (response.isResponseSuccess()) {
-                    val newsEntities = response.articles.map { it.toNewsEntity() }
+                    val newsEntities = response.articles.map { it.toNewsEntity(loadKey + 1) }
                     newsDb.dao.upsertAll(newsEntities)
                 } else {
                     MediatorResult.Error(Exception(response.message))

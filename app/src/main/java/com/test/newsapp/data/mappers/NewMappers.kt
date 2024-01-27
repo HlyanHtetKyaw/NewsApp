@@ -4,7 +4,7 @@ import com.test.newsapp.data.local.NewsEntity
 import com.test.newsapp.data.network.response.ArticleResponse
 import com.test.newsapp.domain.News
 
-fun ArticleResponse.toNewsEntity(): NewsEntity {
+fun ArticleResponse.toNewsEntity(nextPageKey: Int): NewsEntity {
     return NewsEntity(
         title = title ?: "Empty Title",
         description = description ?: "Empty Description",
@@ -12,7 +12,8 @@ fun ArticleResponse.toNewsEntity(): NewsEntity {
         content = content ?: "Empty Content",
         publishedAt = publishedAt ?: "Empty Published At",
         url = url ?: "Empty url",
-        urlToImage = urlToImage ?: "Empty urlToImage"
+        urlToImage = urlToImage ?: "Empty urlToImage",
+        nextPageKey = nextPageKey
     )
 }
 

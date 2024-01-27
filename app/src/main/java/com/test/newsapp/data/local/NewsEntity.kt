@@ -14,4 +14,5 @@ data class NewsEntity(
     val publishedAt: String,
     val url: String,
     val urlToImage: String,
+    val nextPageKey: Int
 )
