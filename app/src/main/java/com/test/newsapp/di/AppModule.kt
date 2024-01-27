@@ -81,21 +81,6 @@ class AppModule {
         ).build()
     }
 
-    @Provides
-    @Singleton
-    fun provideNewsPager(newsDb: NewsDatabase, apiService: ApiService): Pager<Int, NewsEntity> {
-        return Pager(
-            config = PagingConfig(pageSize = 10),
-            remoteMediator = NewsRemoteMediator(
-                newsDb = newsDb,
-                apiService = apiService
-            ),
-            pagingSourceFactory = {
-                newsDb.dao.pagingSource()
-            }
-        )
-    }
-
     @Singleton
     @Provides
     fun provideNewsDao(newsDb: NewsDatabase): NewsDao {

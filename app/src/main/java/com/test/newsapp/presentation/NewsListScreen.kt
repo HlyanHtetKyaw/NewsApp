@@ -19,25 +19,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
 import eu.bambooapps.material3.pullrefresh.pullRefresh
 import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPagingApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsListScreen(viewModel: NewsViewModel, navController: NavHostController) {
-
-    var searchQuery by rememberSaveable { mutableStateOf("") }
 
     val news = viewModel.newsPagingFlow.collectAsLazyPagingItems()
 
@@ -72,7 +67,7 @@ fun NewsListScreen(viewModel: NewsViewModel, navController: NavHostController) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-
+            viewModel.searchNews(it)
         }
         Box(
             modifier = Modifier

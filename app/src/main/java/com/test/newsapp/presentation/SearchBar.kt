@@ -1,6 +1,5 @@
 package com.test.newsapp.presentation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +37,9 @@ fun SearchBar(
     }
 
     val trailingIconView = @Composable {
-        IconButton(onClick = { Log.d("NewsListScreen", "NewsListScreen: ") }) {
+        IconButton(onClick = {
+
+        }) {
             Icon(Icons.Filled.Search, contentDescription = "search")
         }
     }

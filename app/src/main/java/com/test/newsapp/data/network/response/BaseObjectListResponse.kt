@@ -9,6 +9,12 @@ open class BaseObjectListResponse<T> {
     @SerializedName("status")
     val status: String = ""
 
+    @SerializedName("code")
+    val code: String = ""
+
+    @SerializedName("message")
+    val message: String = ""
+
     @SerializedName("totalResults")
     val totalResults: Int = 0
 

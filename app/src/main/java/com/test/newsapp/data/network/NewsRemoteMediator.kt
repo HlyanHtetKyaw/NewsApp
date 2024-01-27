@@ -15,7 +15,8 @@ import java.io.IOException
 @OptIn(ExperimentalPagingApi::class)
 class NewsRemoteMediator(
     private val newsDb: NewsDatabase,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val query: String
 ) : RemoteMediator<Int, NewsEntity>() {
 
     override suspend fun load(
@@ -23,7 +24,7 @@ class NewsRemoteMediator(
         state: PagingState<Int, NewsEntity>
     ): MediatorResult {
         return try {
-            Log.d("NewsRemoteMediator", "load: "+loadType)
+            Log.d("NewsRemoteMediator", "load: " + loadType)
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1
                 LoadType.PREPEND -> return MediatorResult.Success(
@@ -42,7 +43,8 @@ class NewsRemoteMediator(
 
             val response = apiService.newsList(
                 page = loadKey,
-                pageSize = state.config.pageSize
+                pageSize = state.config.pageSize,
+                query = query
             )
 
             newsDb.withTransaction {
@@ -52,6 +54,8 @@ class NewsRemoteMediator(
                 if (response.isResponseSuccess()) {
                     val newsEntities = response.articles.map { it.toNewsEntity() }
                     newsDb.dao.upsertAll(newsEntities)
+                } else {
+                    MediatorResult.Error(Exception(response.message))
                 }
             }
 

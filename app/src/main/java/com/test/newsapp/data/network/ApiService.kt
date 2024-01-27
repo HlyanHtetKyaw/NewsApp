@@ -11,7 +11,7 @@ interface ApiService {
 
     @GET(NEWS_LIST)
     suspend fun newsList(
-        @Query("q") query: String = "bitcoin",
+        @Query("q") query: String,
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
         @Query("apiKey") apiKey: String = BuildConfig.API_KEY,
