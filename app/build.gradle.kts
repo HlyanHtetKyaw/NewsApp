@@ -26,7 +26,7 @@ android {
         release {
             isMinifyEnabled = true
             buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
-            buildConfigField("String", "API_KEY", "\"d35150b5fe414b9fbd1eaad468264b5c\"")
+            buildConfigField("String", "API_KEY", "\"7788b92bd03848528cb701fe02dea417\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -35,7 +35,7 @@ android {
         debug {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
-            buildConfigField("String", "API_KEY", "\"d35150b5fe414b9fbd1eaad468264b5c\"")
+            buildConfigField("String", "API_KEY", "\"7788b92bd03848528cb701fe02dea417\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -115,6 +115,7 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
     implementation("androidx.paging:paging-compose:$pagingVersion")
 
+    // Pull to refresh
     implementation("eu.bambooapps:compose-material3-pullrefresh:1.0.0")
 
 }

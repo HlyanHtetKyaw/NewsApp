@@ -27,17 +27,19 @@ class NewsViewModel @Inject constructor(
     apiService: ApiService
 ) : ViewModel() {
 
-    val queryFlow = MutableStateFlow("bitcoin")
+    val queryFlow = MutableStateFlow("")
 
     val newsPagingFlow = queryFlow.flatMapLatest { query ->
-        Pager(config = PagingConfig(pageSize = 10),
+        val searchQuery = query.ifEmpty { "bitcoin" }
+
+        Pager(config = PagingConfig(pageSize = 5),
             remoteMediator = NewsRemoteMediator(
                 newsDb = newsDb,
                 apiService = apiService,
-                query = query
+                query = searchQuery
             ),
             pagingSourceFactory = {
-                newsDb.dao.pagingSource(query)
+                newsDb.dao.pagingSource(searchQuery)
             }
         ).flow
             .map { pagingData ->

@@ -1,6 +1,5 @@
 package com.test.newsapp.presentation
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,13 +32,11 @@ import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 fun NewsListScreen(viewModel: NewsViewModel, navController: NavHostController) {
 
     val news = viewModel.newsPagingFlow.collectAsLazyPagingItems()
-
     val isRefreshing by remember {
         mutableStateOf(false)
     }
 
     val state = rememberPullRefreshState(refreshing = isRefreshing, onRefresh = {
-        Log.d("TAG", "NewsListScreen: refresh")
         news.refresh()
     })
 
@@ -56,46 +51,44 @@ fun NewsListScreen(viewModel: NewsViewModel, navController: NavHostController) {
         }
     }
 
-
     Column(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxSize()
     ) {
         SearchBar(
-            hint = "Search...", modifier = Modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             viewModel.searchNews(it)
         }
+        Spacer(modifier = Modifier.height(8.dp))
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
+            modifier = Modifier.fillMaxSize()
         ) {
             if (news.loadState.refresh is LoadState.Loading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center)
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(36.dp)
-                    )
-                }
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
             } else {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .pullRefresh(state)
-                        .padding(horizontal = 16.dp),
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                        .pullRefresh(state),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(news.itemCount) { index ->
-                        NewItem(data = news[index]!!) {
-                            navController.navigate("details/${news[index]!!.id}")
+                        if (news[index] != null) {
+                            NewItem(
+                                data = news[index]!!,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                navController.navigate("details/${news[index]!!.id}")
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
                         if (news.loadState.append is LoadState.Loading) {
@@ -103,12 +96,13 @@ fun NewsListScreen(viewModel: NewsViewModel, navController: NavHostController) {
                         }
                     }
                 }
-                PullRefreshIndicator(
-                    refreshing = isRefreshing,
-                    state = state,
-                    modifier = Modifier.align(Alignment.TopCenter)
-                )
             }
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = state,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+
         }
     }
 

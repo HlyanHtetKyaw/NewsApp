@@ -2,18 +2,13 @@ package com.test.newsapp.di
 
 import android.content.Context
 import android.content.res.Resources
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.test.newsapp.BuildConfig
 import com.test.newsapp.data.local.NewsDao
 import com.test.newsapp.data.local.NewsDatabase
-import com.test.newsapp.data.local.NewsEntity
 import com.test.newsapp.data.network.ApiService
-import com.test.newsapp.data.network.NewsRemoteMediator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +20,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@OptIn(ExperimentalPagingApi::class)
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {

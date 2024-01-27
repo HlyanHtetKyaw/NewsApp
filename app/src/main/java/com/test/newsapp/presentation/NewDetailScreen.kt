@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.test.newsapp.R
 import com.test.newsapp.data.mappers.toNews
 import com.test.newsapp.domain.News
 import com.test.newsapp.util.DateUtil
@@ -76,6 +78,8 @@ fun NewsDetailScreen(viewModel: NewsViewModel, navController: NavHostController,
                 model = it.urlToImage,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = it.title,
+                error = painterResource(R.drawable.ic_error),
+                placeholder = painterResource(R.drawable.ic_error),
                 modifier = Modifier
                     .height(120.dp)
                     .align(Alignment.TopCenter)
@@ -159,11 +163,16 @@ fun NewDetailSection(
         Text(
             text = "Published at ${DateUtil.formatDate(data.publishedAt)}",
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start,
             fontSize = 14.sp,
             color = Color.Gray,
 
             )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Authored by - ${data.author}",
+            fontSize = 14.sp,
+            modifier = Modifier.fillMaxWidth(),
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = data.description,
