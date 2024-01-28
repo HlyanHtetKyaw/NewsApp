@@ -34,10 +34,9 @@ fun NewItem(
     onItemClick: (News) -> Unit
 ) {
     Card(
-        modifier = modifier
-            .clickable {
-                onItemClick(data)
-            },
+        modifier = modifier.clickable {
+            onItemClick(data)
+        },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         ),

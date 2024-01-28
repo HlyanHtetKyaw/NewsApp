@@ -130,7 +130,7 @@ fun NewDetailTopSection(
             contentDescription = null,
             tint = Color.White,
             modifier = Modifier
-                .size(36.dp)
+                .size(30.dp)
                 .offset(16.dp, 16.dp)
                 .clickable {
                     navController.popBackStack()

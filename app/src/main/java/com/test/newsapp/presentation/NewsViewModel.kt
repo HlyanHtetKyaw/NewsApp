@@ -29,7 +29,7 @@ class NewsViewModel @Inject constructor(
     private val localRepository: LocalRepository
 ) : ViewModel() {
 
-    val queryFlow = MutableStateFlow("")
+    private val queryFlow = MutableStateFlow("")
 
     val newsPagingFlow = queryFlow.flatMapLatest { query ->
         val searchQuery = query.ifEmpty { "bitcoin" }
