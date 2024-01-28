@@ -8,13 +8,17 @@ import androidx.room.withTransaction
 import com.test.newsapp.data.local.NewsDatabase
 import com.test.newsapp.data.local.NewsEntity
 import com.test.newsapp.data.mappers.toNewsEntity
+import com.test.newsapp.data.repository.LocalRepository
+import com.test.newsapp.data.repository.NetworkRepository
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class NewsRemoteMediator(
     private val newsDb: NewsDatabase,
-    private val apiService: ApiService,
+    private val networkRepository: NetworkRepository,
+    private val localRepository: LocalRepository,
     private val query: String
 ) : RemoteMediator<Int, NewsEntity>() {
 
@@ -23,6 +27,8 @@ class NewsRemoteMediator(
         state: PagingState<Int, NewsEntity>
     ): MediatorResult {
         return try {
+            delay(1000)
+
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1
                 LoadType.PREPEND -> return MediatorResult.Success(
@@ -34,8 +40,7 @@ class NewsRemoteMediator(
                     lastItem?.nextPageKey ?: 1
                 }
             }
-
-            val response = apiService.newsList(
+            val response = networkRepository.getNewsList(
                 page = loadKey,
                 pageSize = state.config.pageSize,
                 query = query
@@ -43,11 +48,11 @@ class NewsRemoteMediator(
 
             newsDb.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    newsDb.dao.clearAll()
+                    localRepository.clearAll()
                 }
                 if (response.isResponseSuccess()) {
                     val newsEntities = response.articles.map { it.toNewsEntity(loadKey + 1) }
-                    newsDb.dao.upsertAll(newsEntities)
+                    localRepository.upsertAll(newsEntities)
                 } else {
                     MediatorResult.Error(Exception(response.message))
                 }

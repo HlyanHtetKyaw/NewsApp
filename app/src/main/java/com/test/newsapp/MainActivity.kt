@@ -40,9 +40,11 @@ class MainActivity : ComponentActivity() {
             navController = navController,
             startDestination = Screen.NewsListScreen.route
         ) {
+
             composable(Screen.NewsListScreen.route) {
                 NewsListScreen(navController = navController, viewModel = newsViewModel)
             }
+
             composable(
                 route = Screen.NewDetailScreen.route,
                 arguments = listOf(navArgument("id") { type = NavType.IntType })

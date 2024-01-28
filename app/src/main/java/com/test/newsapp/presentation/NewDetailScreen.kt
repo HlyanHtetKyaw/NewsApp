@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -161,7 +162,7 @@ fun NewDetailSection(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Published at ${DateUtil.formatDate(data.publishedAt)}",
+            text = stringResource(R.string.published_at, DateUtil.formatDate(data.publishedAt)),
             modifier = Modifier.fillMaxWidth(),
             fontSize = 14.sp,
             color = Color.Gray,
@@ -169,7 +170,7 @@ fun NewDetailSection(
             )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Authored by - ${data.author}",
+            text = stringResource(R.string.authored_by, data.author),
             fontSize = 14.sp,
             modifier = Modifier.fillMaxWidth(),
         )

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">News App</string>
+    <string name="published_at">Published at %1$s</string>
+    <string name="authored_by">Authored by - %1$s</string>
 </resources>

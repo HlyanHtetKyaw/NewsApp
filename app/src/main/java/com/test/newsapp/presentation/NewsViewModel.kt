@@ -10,8 +10,9 @@ import androidx.paging.map
 import com.test.newsapp.data.local.NewsDatabase
 import com.test.newsapp.data.local.NewsEntity
 import com.test.newsapp.data.mappers.toNews
-import com.test.newsapp.data.network.ApiService
 import com.test.newsapp.data.network.NewsRemoteMediator
+import com.test.newsapp.data.repository.LocalRepository
+import com.test.newsapp.data.repository.NetworkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val newsDb: NewsDatabase,
-    apiService: ApiService
+    networkRepository: NetworkRepository,
+    private val localRepository: LocalRepository
 ) : ViewModel() {
 
     val queryFlow = MutableStateFlow("")
@@ -35,11 +37,12 @@ class NewsViewModel @Inject constructor(
         Pager(config = PagingConfig(pageSize = 50),
             remoteMediator = NewsRemoteMediator(
                 newsDb = newsDb,
-                apiService = apiService,
+                networkRepository = networkRepository,
+                localRepository = localRepository,
                 query = searchQuery
             ),
             pagingSourceFactory = {
-                newsDb.dao.pagingSource(searchQuery)
+                localRepository.pagingSource(searchQuery)
             }
         ).flow
             .map { pagingData ->
@@ -50,7 +53,7 @@ class NewsViewModel @Inject constructor(
 
 
     fun getNewsById(id: Int): Flow<NewsEntity?> {
-        return newsDb.dao.getNewsById(id)
+        return localRepository.getNewsById(id)
     }
 
     fun searchNews(query: String) {
